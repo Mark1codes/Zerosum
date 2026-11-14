@@ -1,4 +1,4 @@
-# ZeroSum — Tic-Tac-Toe (`tictactoe-mark`)
+# ZeroSum — Tic-Tac-Toe 
 
 A modern, mobile-first **Tic-Tac-Toe** application (**ZeroSum**) built with **Next.js (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui** components.
 
