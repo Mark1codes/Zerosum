@@ -8,26 +8,39 @@ Built as a practical React & Next.js coding challenge submission, designed to fe
 
 ## Live Demo & Repository
 
-- **Live Production App (Vercel):** `https://tictactoe-mark.vercel.app` *(update after deploying)*
-- **GitHub Repository:** `https://github.com/Mark1codes/tictactoe-mark`
+- **Live Production App (Vercel):** `https://zerosum.vercel.app` *(update with your final Vercel domain)*
+- **GitHub Repository:** [https://github.com/Mark1codes/Zerosum](https://github.com/Mark1codes/Zerosum)
 
 ---
 
 ## Features
 
-- **Two Game Modes:**
+- **Two Game Modes with Isolated Session State:**
   - **Player vs. Player (Local 2P):** Play head-to-head on the same device.
   - **Player vs. AI (1P):** Play against a built-in computer opponent with three difficulty levels:
-    - **Easy:** Casual random/opportunistic moves.
-    - **Medium:** Blocks immediate winning threats and takes winning moves.
-    - **Unbeatable (Minimax):** Uses the Minimax algorithm with alpha-beta pruning for optimal play.
-- **Win-Line Detection & Highlighting:** Automatically detects horizontal, vertical, and diagonal wins, highlights the 3 winning tiles, and announces the winner or draw state.
-- **Live Scoreboard & Streak Tracking:** Tracks **X Wins**, **O Wins**, **Draws**, and current win streaks across rounds, persisted in `localStorage`.
-- **Move History & Time Travel:** Step backward or jump to any previous move in the current match, just like the classic React documentation tutorial enhanced for production.
-- **Mobile-First & Touch-Friendly UI:**
-  - Built specifically to work smoothly on phones (large tap targets, zero layout shift, responsive typography, and clean spacing on small screens).
-  - Keyboard-accessible grid cells (`Tab` / `Enter` / `Space`).
-- **Quick Controls:** Instant **New Round** button and **Reset Scores** button.
+    - **Easy:** Casual random and opportunistic moves.
+    - **Medium:** Tactical AI that blocks immediate threats and takes winning moves.
+    - **Unbeatable (Minimax):** Uses the Minimax algorithm with alpha-beta pruning for optimal, depth-aware play.
+  - Each mode and AI difficulty maintains its own independent board state, round counter, and scoreboard in `localStorage`.
+- **3 Switchable Board Themes & Ghost Hover Previews:**
+  - **3D Tiles (Default):** Tactile floating keycap tiles inside a recessed slate tray over a subtle dot-matrix backdrop.
+  - **Midnight:** Deep `#0B1120` obsidian arena matching the ZeroSum brand icon with glowing cyan/blue win lines.
+  - **Classic:** Clean minimalist grid.
+  - **Ghost Hover Previews:** Hovering over any empty square displays a subtle 25%-opacity preview of the active player's token before placing a move.
+- **Share Match Result (3x3 Emoji Grid & Visual Match Card):**
+  - One-click **Share Match Result** in both the **Move History** panel and the **Post-Match Celebration Modal**.
+  - Previews a visual 3x3 mini-board summary card with active tokens and copies a Wordle-style 3x3 emoji grid + scoreboard snapshot directly to the clipboard for sharing in chat or social feeds.
+- **Custom Player Tokens (Icons & Emojis):**
+  - Choose from 7 curated rivalry presets (*Classic X & O*, *Bolt & Shield*, *Crown & Gem*, *Fire & Ice*, *Rocket & UFO*, *Swords & Dragon*, *Cat & Dog*) or pick custom vector icons and emojis for Player X and Player O.
+- **Win-Line Detection & Post-Match Celebration Modal:**
+  - Automatically detects horizontal, vertical, and diagonal wins, draws an animated SVG strike-through band across the winning cells, and displays a post-match summary modal with accuracy, streak, and rating stats.
+- **Move History & Time Travel:**
+  - Step backward (`Z` shortcut to Undo) or jump to any previous move in the current match with coordinate timestamps (`A1`–`C3`).
+- **Session Analytics & Coordinate Heatmap:**
+  - Dedicated **Analytics** view tracking win/draw ratios, Best-of-N series progress, a 3x3 coordinate popularity heatmap, and completed match logs.
+- **Native Mobile-First Navigation:**
+  - Designed specifically to work smoothly on phones with a clean mobile top bar, segmented AI difficulty pill strip, and a fixed 5-tab bottom navigation dock (*Board*, *PvP*, *vs AI*, *Analytics*, *Settings*) with iOS safe-area support.
+  - Keyboard shortcuts (`Space` for New Game / Restart, `Z` for Undo Move) and accessible grid cells.
 
 ---
 
@@ -47,25 +60,34 @@ Built as a practical React & Next.js coding challenge submission, designed to fe
 ## Project Architecture
 
 ```text
-tictactoe-mark/
+Zerosum/
 ├── src/
 │   ├── app/
-│   │   ├── globals.css        # Tailwind CSS directives & theme tokens
-│   │   ├── layout.tsx         # Root layout, metadata & mobile viewport config
-│   │   └── page.tsx           # Main Tic-Tac-Toe page & game container
+│   │   ├── globals.css                 # Tailwind CSS directives & theme tokens
+│   │   ├── icon.png                    # Full-bleed app icon / favicon
+│   │   ├── layout.tsx                  # Root layout, Plus Jakarta Sans & Inter fonts
+│   │   └── page.tsx                    # Main Tic-Tac-Toe state container & session buckets
 │   ├── components/
-│   │   ├── GameBoard.tsx      # 3x3 interactive grid with win-line highlighting
-│   │   ├── ScoreBoard.tsx     # X / Draw / O score cards & streak indicator
-│   │   ├── GameControls.tsx   # Mode selector (PvP / AI), difficulty & reset actions
-│   │   ├── MoveHistory.tsx    # Step-by-step move log with time-travel jump buttons
-│   │   └── ui/                # Reusable shadcn/ui primitives (Button, Card, Badge)
+│   │   ├── GameBoard.tsx               # 3x3 arena with 3 board themes & ghost hover previews
+│   │   ├── GameControls.tsx            # Desktop sidebar + mobile top bar & bottom tab dock
+│   │   ├── ScoreBoard.tsx              # Session scoreboard, ratio bar & Best-of-N series tracker
+│   │   ├── MoveHistory.tsx             # Time-travel move list & Share Match Result trigger
+│   │   ├── PlayerTokenRenderer.tsx     # Classic X/O, vector icons & emoji token selector
+│   │   ├── WinCelebrationModal.tsx     # Post-match summary modal with 1-click Share Result
+│   │   ├── ExportModal.tsx             # Visual Share Match Result card & clipboard copy modal
+│   │   ├── AnalyticsView.tsx           # Win-rate cards, 3x3 coordinate heatmap & match history
+│   │   ├── SettingsView.tsx            # Token customizer, board options & series configuration
+│   │   ├── __tests__/                  # Component tests (Vitest)
+│   │   └── ui/                         # Reusable UI primitives (Button, Card, Badge)
 │   └── lib/
-│       ├── game-logic.ts      # Win detection, draw checks & Minimax AI engine
-│       └── utils.ts           # Classname helper (clsx + tailwind-merge)
-├── public/                    # Static assets & icons
+│       ├── game-logic.ts               # Win detection, Alpha-Beta Minimax AI & share generator
+│       ├── __tests__/                  # Unit tests for game engine & Minimax AI
+│       └── utils.ts                    # Classname & duration formatting helpers
+├── public/                             # Static brand assets (favicon.png, logo.png)
 ├── package.json
 ├── tsconfig.json
 ├── tailwind.config.ts
+├── vitest.config.ts
 └── README.md
 ```
 
@@ -88,8 +110,8 @@ tictactoe-mark/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/Mark1codes/tictactoe-mark.git
-cd tictactoe-mark
+git clone https://github.com/Mark1codes/Zerosum.git
+cd Zerosum
 ```
 
 ### 2. Install dependencies

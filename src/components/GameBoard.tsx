@@ -449,24 +449,6 @@ export function GameBoard({
             <span>Undo Move</span>
           </button>
         </div>
-
-        {showSuggestedMove && (
-          <div
-            className="flex items-center gap-1.5 text-[11px] font-mono text-slate-500"
-            title={
-              analysis.bestCoord
-                ? `Recommended coordinate: ${analysis.bestCoord}`
-                : "Round finished"
-            }
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />
-            <span>
-              {winner === null
-                ? `Next suggested move: Optimal depth ${analysis.optimalDepth}`
-                : `Match complete • Final depth 0`}
-            </span>
-          </div>
-        )}
       </div>
     </Card>
   );
