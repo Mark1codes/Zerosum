@@ -8,7 +8,7 @@ Built as a practical React & Next.js coding challenge submission, designed to fe
 
 ## Live Demo & Repository
 
-- **Live Production App (Vercel):** `https://zerosum.vercel.app` *(update with your final Vercel domain)*
+- **Live Production App (Vercel):** https://zerosum-v1.vercel.app/
 - **GitHub Repository:** [https://github.com/Mark1codes/Zerosum](https://github.com/Mark1codes/Zerosum)
 
 ---
