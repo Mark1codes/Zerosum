@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   X,
   Zap,
   TrendingUp,
   RotateCw,
   Eye,
-  Download,
+  Share2,
+  Check,
 } from "lucide-react";
 import {
   GameMode,
@@ -36,6 +37,7 @@ interface WinCelebrationModalProps {
   mode: GameMode;
   eloRating: number;
   eloDelta: number;
+  shareText?: string;
   onPlayAgain: () => void;
   onReviewBoard: () => void;
   onExport: () => void;
@@ -62,11 +64,42 @@ export function WinCelebrationModal({
   mode,
   eloRating,
   eloDelta,
+  shareText,
   onPlayAgain,
   onReviewBoard,
   onExport,
 }: WinCelebrationModalProps) {
+  const [copied, setCopied] = useState(false);
+
+  const pathTypeLabel = React.useMemo(() => {
+    if (!lineType) return "Full Grid Parity";
+    if (lineType.startsWith("diag")) return "Diagonal";
+    if (lineType.startsWith("row")) return "Horizontal";
+    return "Vertical";
+  }, [lineType]);
+
+  const pathCoords = React.useMemo(() => {
+    if (!winningLine || winningLine.length === 0) {
+      return ["A1", "B2", "C3"];
+    }
+    return winningLine.map((idx) => indexToCoord(idx));
+  }, [winningLine]);
+
   if (!isOpen || winner === null) return null;
+
+  const handleShareClick = async () => {
+    if (shareText) {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      } catch {
+        // Fallback to modal if clipboard API is unavailable
+      }
+    }
+    onExport();
+  };
 
   const isDraw = winner === "DRAW";
 
@@ -104,20 +137,6 @@ export function WinCelebrationModal({
   const prevElo = eloRating - eloDelta;
   const formattedDelta =
     eloDelta >= 0 ? `+${eloDelta} pts` : `${eloDelta} pts`;
-
-  const pathTypeLabel = React.useMemo(() => {
-    if (!lineType) return "Full Grid Parity";
-    if (lineType.startsWith("diag")) return "Diagonal";
-    if (lineType.startsWith("row")) return "Horizontal";
-    return "Vertical";
-  }, [lineType]);
-
-  const pathCoords = React.useMemo(() => {
-    if (!winningLine || winningLine.length === 0) {
-      return ["A1", "B2", "C3"];
-    }
-    return winningLine.map((idx) => indexToCoord(idx));
-  }, [winningLine]);
 
   const searchDepth = Math.max(1, 9 - movesCount);
 
@@ -335,11 +354,20 @@ export function WinCelebrationModal({
 
             <button
               type="button"
-              onClick={onExport}
+              onClick={handleShareClick}
               className="rounded-xl border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 py-2.5 px-3 text-xs font-semibold text-slate-700 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5 text-slate-500" />
-              <span>Export PGN/JSON</span>
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700">Result Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Share Result</span>
+                </>
+              )}
             </button>
           </div>
         </div>

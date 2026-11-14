@@ -102,6 +102,7 @@ const DEFAULT_SETTINGS: GameSettings = {
   tokenTheme: "classic",
   xSymbol: "classic-x",
   oSymbol: "classic-o",
+  boardTheme: "tactile",
 };
 
 export default function HomePage() {
@@ -648,6 +649,8 @@ export default function HomePage() {
         winner,
         scores,
         timerSeconds,
+        xSymbol: settings.xSymbol,
+        oSymbol: settings.oSymbol,
       }),
     [
       roundNumber,
@@ -658,6 +661,8 @@ export default function HomePage() {
       winner,
       scores,
       timerSeconds,
+      settings.xSymbol,
+      settings.oSymbol,
     ]
   );
 
@@ -717,6 +722,10 @@ export default function HomePage() {
                 tokenTheme={settings.tokenTheme}
                 xSymbol={settings.xSymbol}
                 oSymbol={settings.oSymbol}
+                boardTheme={settings.boardTheme ?? "tactile"}
+                onSelectBoardTheme={(nextBoardTheme) =>
+                  handleUpdateSettings({ boardTheme: nextBoardTheme })
+                }
                 onSelectTokenPreset={(themeId, xSym, oSym) =>
                   handleUpdateSettings({
                     tokenTheme: themeId,
@@ -794,6 +803,7 @@ export default function HomePage() {
         mode={mode}
         eloRating={eloRating}
         eloDelta={eloDelta}
+        shareText={exportData.shareText}
         onPlayAgain={handleStartNewGame}
         onReviewBoard={() => setCelebrationModalOpen(false)}
         onExport={() => {
@@ -802,11 +812,18 @@ export default function HomePage() {
         }}
       />
 
-      {/* Export Match PGN / JSON Modal */}
+      {/* Share Match Result Modal */}
       <ExportModal
         isOpen={exportModalOpen}
-        pgn={exportData.pgn}
-        json={exportData.json}
+        shareText={exportData.shareText}
+        board={activeBoard}
+        winner={winner}
+        winningLine={winningLine}
+        mode={mode}
+        movesCount={currentStep}
+        scores={scores}
+        xSymbol={settings.xSymbol}
+        oSymbol={settings.oSymbol}
         roundNumber={roundNumber}
         onClose={() => setExportModalOpen(false)}
       />

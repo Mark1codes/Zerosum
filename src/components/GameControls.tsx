@@ -76,15 +76,15 @@ export function GameControls({
         {/* Brand Header (ZeroSum, compact logo, no Active Session pill) */}
         <div className="px-2.5 pt-1 pb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo.png"
+                src="/favicon.png"
                 alt="ZeroSum Logo"
-                className="w-full h-full object-cover scale-[2.2]"
+                className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-[15px] font-bold tracking-tight text-slate-900">
+            <span className="font-brand text-[16px] font-extrabold tracking-[-0.035em] text-[#0F172A]">
               ZeroSum
             </span>
           </div>
@@ -268,15 +268,15 @@ export function GameControls({
       <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-4 py-2.5 space-y-2 select-none">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logo.png"
+                src="/favicon.png"
                 alt="ZeroSum Logo"
-                className="w-full h-full object-cover scale-[2.2]"
+                className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-[15px] font-bold tracking-tight text-slate-900">
+            <span className="font-brand text-[16px] font-extrabold tracking-[-0.035em] text-[#0F172A]">
               ZeroSum
             </span>
           </div>

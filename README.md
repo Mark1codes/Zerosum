@@ -1,6 +1,6 @@
-# ZeroSum — Tic-Tac-Toe SaaS Workspace (`tictactoe-mark`)
+# ZeroSum — Tic-Tac-Toe (`tictactoe-mark`)
 
-A modern, mobile-first **Tic-Tac-Toe SaaS Workspace** (**ZeroSum**) built with **Next.js (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui** components.
+A modern, mobile-first **Tic-Tac-Toe** application (**ZeroSum**) built with **Next.js (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui** components.
 
 Built as a practical React & Next.js coding challenge submission, designed to feel fast, responsive on phones and desktops, and clean under the hood.
 

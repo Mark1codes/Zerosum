@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { History, Download } from "lucide-react";
+import { History, Share2 } from "lucide-react";
 import { MoveRecord } from "@/lib/game-logic";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -137,15 +137,15 @@ export function MoveHistory({
         </div>
       </div>
 
-      {/* Export Button */}
+      {/* Share Match Result Button */}
       <div className="mt-4 pt-1">
         <button
           type="button"
           onClick={onExport}
           className="w-full py-2.5 px-3 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer"
         >
-          <Download className="w-3.5 h-3.5 text-slate-500" />
-          <span>Export Match PGN / JSON</span>
+          <Share2 className="w-3.5 h-3.5 text-slate-500" />
+          <span>Share Match Result</span>
         </button>
       </div>
     </Card>

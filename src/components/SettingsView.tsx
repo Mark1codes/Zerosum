@@ -60,7 +60,18 @@ export function SettingsView({
 
   return (
     <div className="space-y-5 max-w-3xl">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-between gap-2.5">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={onBackToDashboard}
+          className="lg:order-last"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Back to Board
+        </Button>
+
         <div>
           <div className="flex items-center gap-2">
             <Settings className="w-4 h-4 text-slate-700" />
@@ -73,16 +84,6 @@ export function SettingsView({
             suggestions, and series rules.
           </p>
         </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={onBackToDashboard}
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Back to Board
-        </Button>
       </div>
 
       {/* Player Icons & Emojis Card */}

@@ -163,6 +163,8 @@ export const SELECTABLE_EMOJI_TOKENS = [
   "👻",
 ] as const;
 
+export type BoardThemeId = "tactile" | "midnight" | "classic";
+
 export interface GameSettings {
   showCoordinates: boolean;
   showSuggestedMove: boolean;
@@ -174,6 +176,7 @@ export interface GameSettings {
   tokenTheme: TokenThemeId;
   xSymbol: string;
   oSymbol: string;
+  boardTheme?: BoardThemeId;
 }
 
 export const COORDINATES = [
@@ -473,9 +476,20 @@ export function generateMatchExport(params: {
   winner: Player | "DRAW" | null;
   scores: ScoreState;
   timerSeconds: number;
-}): { pgn: string; json: string } {
-  const { roundNumber, mode, difficulty, moves, winner, scores, timerSeconds } =
-    params;
+  xSymbol?: string;
+  oSymbol?: string;
+}): { shareText: string; pgn: string; json: string } {
+  const {
+    roundNumber,
+    mode,
+    difficulty,
+    moves,
+    winner,
+    scores,
+    timerSeconds,
+    xSymbol,
+    oSymbol,
+  } = params;
   const dateStr = new Date().toISOString().split("T")[0].replace(/-/g, ".");
   const resultTag =
     winner === "X"
@@ -506,7 +520,7 @@ export function generateMatchExport(params: {
 
   const pgnLines = [
     `[Event "TicTacToe Pro Session - Best of ${scores.seriesBestOf}"]`,
-    `[Site "TicTacToe Pro SaaS Workspace"]`,
+    `[Site "ZeroSum"]`,
     `[Date "${dateStr}"]`,
     `[Round "${roundNumber}"]`,
     `[PlayerX "${whiteName}"]`,
@@ -550,7 +564,60 @@ export function generateMatchExport(params: {
     },
   };
 
+  const currentBoard: BoardState =
+    moves.length > 0
+      ? [...moves[moves.length - 1].boardSnapshot]
+      : createEmptyBoard();
+
+  const resolveEmojiToken = (symbol: string | undefined, fallback: string) => {
+    if (!symbol) return fallback;
+    if (
+      symbol.startsWith("classic-") ||
+      SELECTABLE_VECTOR_TOKENS.some((t) => t.id === symbol)
+    ) {
+      return fallback;
+    }
+    return symbol;
+  };
+
+  const xEmoji = resolveEmojiToken(xSymbol, "❌");
+  const oEmoji = resolveEmojiToken(oSymbol, "⭕");
+
+  const gridRows: string[] = [];
+  for (let r = 0; r < 3; r++) {
+    const rowCells: string[] = [];
+    for (let c = 0; c < 3; c++) {
+      const cell = currentBoard[r * 3 + c];
+      rowCells.push(cell === "X" ? xEmoji : cell === "O" ? oEmoji : "⬜");
+    }
+    gridRows.push(rowCells.join(" "));
+  }
+
+  const modeLabel =
+    mode === "ai"
+      ? `vs AI (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})`
+      : "PvP";
+
+  const outcomeLine =
+    winner === "X"
+      ? `🏆 Player X won in ${moves.length} moves!`
+      : winner === "O"
+      ? `🏆 ${mode === "ai" ? "Player O (AI)" : "Player O"} won in ${moves.length} moves!`
+      : winner === "DRAW"
+      ? `🤝 Round Drawn in ${moves.length} moves!`
+      : `⏳ Match in progress (${moves.length} ${moves.length === 1 ? "move" : "moves"} played)`;
+
+  const shareLines = [
+    `ZeroSum — Round #${roundNumber} (${modeLabel})`,
+    outcomeLine,
+    ``,
+    ...gridRows,
+    ``,
+    `📊 Score: ${scores.xWins}W - ${scores.draws}D - ${scores.oWins}L`,
+  ];
+
   return {
+    shareText: shareLines.join("\n"),
     pgn: pgnLines.join("\n"),
     json: JSON.stringify(jsonPayload, null, 2),
   };
