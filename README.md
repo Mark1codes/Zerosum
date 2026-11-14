@@ -1,5 +1,8 @@
 # ZeroSum — Tic-Tac-Toe 
 
+<img width="1920" height="912" alt="image" src="https://github.com/user-attachments/assets/58f2fa50-b491-487e-a47c-97b990c7ea7f" />
+
+
 A modern, mobile-first **Tic-Tac-Toe** application (**ZeroSum**) built with **Next.js (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui** components.
 
 Built as a practical React & Next.js coding challenge submission, designed to feel fast, responsive on phones and desktops, and clean under the hood.
